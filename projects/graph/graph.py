@@ -66,7 +66,7 @@ class Graph:
         """
         # Create a queue and enqueue the starting vertex
         ss = Stack()
-        qq.push([starting_vertex])
+        ss.push([starting_vertex])
         # Create a set of traversed vertices
         visited = set()
         # While the queue is not empty
@@ -106,6 +106,8 @@ class Graph:
         for neighbor in self.vertices[starting_vertex]:
             if neighbor not in visited:
                 self.dft_recursive(neighbor, visited)
+                # if a node has no unvisited neighbors, do nothing
+                # essentially a base case
 
     def bfs(self, starting_vertex, destination_vertex):
         """
@@ -113,7 +115,27 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
-        pass  # TODO
+        # Create a queue and enqueue the starting vertex
+        qq = Queue()
+        qq.enqueue([starting_vertex])
+        # Create a set of traversed vertices
+        visited = set()
+        # While the queue is not empty
+        while qq.size() > 0:
+            # dequeue/pop the first vertex
+            path = qq.dequeue()
+            # if not visited
+            if path[-1] not in visited:
+                # Do what you want to each one
+                if path[-1] == destination_vertex:
+                    return path
+                # mark as visited
+                visited.add(path[-1])
+                # enqueue all it's neighbors
+                for next_vert in self.get_neighbors(path[-1]):
+                    new_path = list(path)
+                    new_path.append(next_vert)
+                    qq.enqueue(new_path)
 
     def dfs(self, starting_vertex, destination_vertex):
         """
