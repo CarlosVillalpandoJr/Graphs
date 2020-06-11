@@ -7,48 +7,105 @@ class Graph:
 
     """Represent a graph as a dictionary of vertices mapping labels to edges."""
     def __init__(self):
-        self.vertices = {}
+        self.vertices = {} # Adjacency List
 
     def add_vertex(self, vertex_id):
         """
         Add a vertex to the graph.
         """
-        pass  # TODO
+        self.vertices[vertex_id] = set() # set will represent edges
 
     def add_edge(self, v1, v2):
         """
         Add a directed edge to the graph.
         """
-        pass  # TODO
+        if v1 in self.vertices and v2 in self.vertices:
+            self.vertices[v1].add(v2) # Update set to add edge
+        else:
+            print('ERROR ADDING EDGE: Vertex not found.')
 
     def get_neighbors(self, vertex_id):
         """
         Get all neighbors (edges) of a vertex.
         """
-        pass  # TODO
+        if vertex_id in self.vertices:
+            return self.vertices[vertex_id]
+        else:
+            return None
 
     def bft(self, starting_vertex):
         """
         Print each vertex in breadth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        # Create a queue and enqueue the starting vertex
+        qq = Queue()
+        qq.enqueue([starting_vertex])
+        # Create a set of traversed vertices
+        visited = set()
+        # While the queue is not empty
+        while qq.size() > 0:
+            # dequeue/pop the first vertex
+            path = qq.dequeue()
+            # if not visited
+            if path[-1] not in visited:
+                # Do what you want to each one
+                print(path[-1])
+                # mark as visited
+                visited.add(path[-1])
+                # enqueue all it's neighbors
+                for next_vert in self.get_neighbors(path[-1]):
+                    new_path = list(path)
+                    new_path.append(next_vert)
+                    qq.enqueue(new_path)
 
     def dft(self, starting_vertex):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        # Create a queue and enqueue the starting vertex
+        ss = Stack()
+        qq.push([starting_vertex])
+        # Create a set of traversed vertices
+        visited = set()
+        # While the queue is not empty
+        while ss.size() > 0:
+            # dequeue/pop the first vertex
+            path = ss.pop()
+            # if not visited
+            if path[-1] not in visited:
+                # Do what you want to each one
+                print(path[-1])
+                # mark as visited
+                visited.add(path[-1])
+                # add all it's neighbors
+                for next_vert in self.get_neighbors(path[-1]):
+                    new_path = list(path) # lists pass by reference and would change all paths
+                    new_path.append(next_vert)
+                    ss.push(new_path)
 
-    def dft_recursive(self, starting_vertex):
+    def dft_recursive(self, starting_vertex, visited = None):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
 
         This should be done using recursion.
         """
-        pass  # TODO
+        # Initial Case
+        if visited is None:
+            visited = set() 
+
+        # Base Case: How do we know we're done? 
+        # When we have no more neighbors
+
+        # Track visited nodes
+        visited.add(starting_vertex)
+        print(starting_vertex)
+        # Call the function recursively - on neighbors not visited 
+        for neighbor in self.vertices[starting_vertex]:
+            if neighbor not in visited:
+                self.dft_recursive(neighbor, visited)
 
     def bfs(self, starting_vertex, destination_vertex):
         """
