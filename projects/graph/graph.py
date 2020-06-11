@@ -136,6 +136,9 @@ class Graph:
                     new_path = list(path)
                     new_path.append(next_vert)
                     qq.enqueue(new_path)
+            # What happens here in Python automatically?
+            # Function will return None if destination not found
+
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -143,7 +146,27 @@ class Graph:
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        pass  # TODO
+        # Create a queue and enqueue the starting vertex
+        ss = Stack()
+        ss.push([starting_vertex])
+        # Create a set of traversed vertices
+        visited = set()
+        # While the queue is not empty
+        while ss.size() > 0:
+            # dequeue/pop the first vertex
+            path = ss.pop()
+            # if not visited
+            if path[-1] not in visited:
+                # Do what you want to each one
+                if path[-1] == destination_vertex:
+                    return path
+                # mark as visited
+                visited.add(path[-1])
+                # add all it's neighbors
+                for next_vert in self.get_neighbors(path[-1]):
+                    new_path = list(path) # lists pass by reference and would change all paths
+                    new_path.append(next_vert)
+                    ss.push(new_path)
 
     def dfs_recursive(self, starting_vertex, destination_vertex):
         """
